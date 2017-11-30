@@ -1,0 +1,10 @@
+JOSM MovementAlert Plugin 
+======
+
+This plugin will display an alert whenever an object is moved a long distance (such as by a misoperation)).
+
+    * Maripo GODA <goda.mariko@gmail.com>
+    
+    * License: GPL v2 (as JOSM)
+      
+    * This plugin is still experimental. Please feel free to send your opinions, suggestions and pull requests.
