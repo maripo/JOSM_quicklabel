@@ -53,7 +53,7 @@ public class QuickLabelDialog extends ExtendedDialog {
 					Config.getPref().getList(prefKeyDefault, new ArrayList<String>()));
 			JPanel panel = new JPanel(new GridBagLayout());
 			panel.add(new JLabel(title), GBC.eol());
-			textarea = new JTextArea(6, 30);
+			textarea = new JTextArea(6, 15);
 			if (savedDefault != null && !savedDefault.isEmpty()) {
 				textarea.setText(String.join("\n", savedDefault.toArray(new String[0])));
 			}
