@@ -27,87 +27,152 @@ import org.openstreetmap.josm.tools.GBC;
 
 public class QuickLabelDialog extends ExtendedDialog {
 
-	JTextArea textarea;
-    private static final String PREF_KEY_QUICKLABEL_TAGS = "quicklabel.tags";
-	private static final String PREF_KEY_DEFAULT = "mappaint.nameComplementOrder";
-	public QuickLabelDialog () {
-		super(Main.parent, "QuickLabel");
-		List<String> savedDefault = Config.getPref().getList(PREF_KEY_QUICKLABEL_TAGS,
-				Config.getPref().getList(PREF_KEY_DEFAULT, new ArrayList<String>()));
-		this.setAlwaysOnTop(true);
-		JPanel panel = new JPanel(new GridBagLayout());
-		panel.add(new JLabel(tr("<html>Tags to show next to objects.<br>You can specify multiple tags by writing into multiple lines<br>in the order of descending priorities.</html>")),
-				GBC.eop());
-		textarea = new JTextArea(6, 30);
-		if (savedDefault!=null && !savedDefault.isEmpty()) {
-			textarea.setText(String.join("\n", savedDefault.toArray(new String[0])));
-		}
-		textarea.addKeyListener(new KeyListener() {
+	// Preferences keys for default conf
+	private static final String PREF_KEY_DEFAULT_MAIN_LABEL_ORDER = "mappaint.nameOrder";
+	private static final String PREF_KEY_DEFAULT_SUB_LABEL_ORDER = "mappaint.nameComplementOrder";
 
-			@Override
-			public void keyTyped(KeyEvent e) {
+	// Preferences keys for custom conf
+	private static final String PREF_KEY_QUICKLABEL_MAIN_LABEL_ORDER = "quicklabel.nameOrder";
+	private static final String PREF_KEY_QUICKLABEL_SUB_LABEL_ORDER = "quicklabel.nameComplementOrder";
+
+	class Conf {
+
+		private JTextArea textarea;
+		private String prefKeyDefault;
+		private String prefKeyQuicklabel;
+		private String title;
+
+		public Conf(String prefKeyDefault, String prefKeyQuicklabel, String title) {
+			this.prefKeyDefault = prefKeyDefault;
+			this.prefKeyQuicklabel = prefKeyQuicklabel;
+			this.title = title;
+		}
+
+		public JPanel getPanel() {
+			List<String> savedDefault = Config.getPref().getList(prefKeyQuicklabel,
+					Config.getPref().getList(prefKeyDefault, new ArrayList<String>()));
+			JPanel panel = new JPanel(new GridBagLayout());
+			panel.add(new JLabel(title), GBC.eol());
+			textarea = new JTextArea(6, 30);
+			if (savedDefault != null && !savedDefault.isEmpty()) {
+				textarea.setText(String.join("\n", savedDefault.toArray(new String[0])));
 			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode()==KeyEvent.VK_ENTER
-						&& ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK)!=0 
-						|| (e.getModifiersEx() & InputEvent.META_DOWN_MASK)!=0)) {
-					apply();
+			textarea.addKeyListener(new KeyListener() {
+
+				@Override
+				public void keyTyped(KeyEvent e) {
+				}
+
+				@Override
+				public void keyReleased(KeyEvent e) {
+				}
+
+				@Override
+				public void keyPressed(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_ENTER && ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0
+							|| (e.getModifiersEx() & InputEvent.META_DOWN_MASK) != 0)) {
+						applyAll();
+					}
+				}
+			});
+			panel.add(textarea, GBC.eol());
+			return panel;
+		}
+		List<String> prevValues = null;
+		
+		// Replace with new value temporarily
+		public void preApply() {
+			List<String> values = new ArrayList<String>();
+
+			String[] lines = textarea.getText().split("\n");
+			for (String line : lines) {
+				if (!line.isEmpty()) {
+					values.add(line);
 				}
 			}
-		});
-		panel.add(textarea, GBC.eop());
-		JButton applyButton = new JButton(tr("Apply"));
-		applyButton.addActionListener(new ActionListener() {
+			if (values.isEmpty()) {
+				return;
+			}
 			
+			prevValues = Config.getPref().getList(prefKeyDefault, null);
+			Config.getPref().putList(prefKeyDefault, values);
+			Config.getPref().putList(prefKeyQuicklabel, values);
+		}
+		/* Restore default key */
+		public void postApply () {
+			Config.getPref().putList(prefKeyDefault, prevValues);
+			
+		}
+
+		public void focus() {
+			textarea.requestFocus();
+		}
+
+	}
+
+	Conf confSub = new Conf(PREF_KEY_DEFAULT_SUB_LABEL_ORDER, PREF_KEY_QUICKLABEL_SUB_LABEL_ORDER, 
+			tr("Sub"));
+
+	Conf confMain = new Conf(PREF_KEY_DEFAULT_MAIN_LABEL_ORDER, PREF_KEY_QUICKLABEL_MAIN_LABEL_ORDER, 
+			tr("Main"));
+
+	public QuickLabelDialog() {
+		super(Main.parent, "QuickLabel");
+		this.setAlwaysOnTop(true);
+
+		JPanel panel = new JPanel(new GridBagLayout());
+		panel.add(new JLabel(
+						tr("<html>Tags to show next to objects.<br>You can specify multiple tags by writing into multiple lines<br>in the order of descending priorities.</html>")),
+				GBC.eop());
+		panel.add(new JLabel(tr("<html>Label format will be \"<b><i>Main</i>(<i>Sub</i>)</b>\" or \"<b><i>Sub</i></b>\" if main tag is empty.</html>")),GBC.eop());
+
+		JPanel formContainer = new JPanel(new GridBagLayout());
+		formContainer.add(confMain.getPanel(), GBC.std().insets(5));
+		formContainer.add(confSub.getPanel(), GBC.eol().insets(5));
+		panel.add(formContainer,GBC.eol());
+
+		JButton applyButton = new JButton(tr("Apply"));
+		applyButton.setToolTipText(tr("Apply change and show customized labels"));
+		applyButton.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				apply();
+				applyAll();
 			}
 		});
+
+		JButton resetButton = new JButton(tr("Reset"));
+		resetButton.setToolTipText(tr("Reset QuickLabel config and show default labels"));
+		resetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				reset();
+			}
+		});
+		
 		JButton cancelButton = new JButton(tr("Cancel"));
+		cancelButton.setToolTipText(tr("Close this window without saving"));
 		cancelButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				cancel();
-				
+
 			}
 		});
 		panel.add(applyButton, GBC.std());
+		panel.add(resetButton, GBC.std());
 		panel.add(cancelButton, GBC.eol());
 		setContent(panel);
-		textarea.requestFocus();
+		confMain.focus();
 	}
-	private void cancel () {
-		dispose();
-	}
-	void apply () {
-		List<String> values = new ArrayList<String>();
-		
-		String[] lines = textarea.getText().split("\n");
-		for (String line: lines) {
-			if (!line.isEmpty()) {
-				values.add(line);
-			}
-		}
-		if (values.isEmpty()) {
-			return;
-		}
+	
+	// Reload TextLabel.AUTO_LABEL_COMPOSITION_STRATEGY by reflection
+	private void reloadStrategy () {
 		LabelCompositionStrategy strategy = TextLabel.AUTO_LABEL_COMPOSITION_STRATEGY;
-		
-		List<String> prevValues = Config.getPref().getList(PREF_KEY_DEFAULT, new ArrayList<String>());
-		Config.getPref().putList(PREF_KEY_DEFAULT, values);
-		
 		try {
 			Method method = strategy.getClass().getMethod("initNameTagsFromPreferences");
 			method.invoke(strategy);
-			Config.getPref().putList(PREF_KEY_QUICKLABEL_TAGS, values);
 		} catch (NoSuchMethodException | SecurityException e1) {
 			e1.printStackTrace();
 		} catch (IllegalAccessException e1) {
@@ -116,9 +181,24 @@ public class QuickLabelDialog extends ExtendedDialog {
 			e1.printStackTrace();
 		} catch (InvocationTargetException e1) {
 			e1.printStackTrace();
-		} finally {
-			Config.getPref().putList(PREF_KEY_DEFAULT, prevValues);
-			dispose();
 		}
+	}
+
+	private void applyAll() {
+		confMain.preApply();
+		confSub.preApply();
+		reloadStrategy();
+		confMain.postApply();
+		confSub.postApply();
+		dispose();
+	}
+	
+	private void reset () {
+		reloadStrategy();
+		dispose();
+	}
+
+	private void cancel() {
+		dispose();
 	}
 }
