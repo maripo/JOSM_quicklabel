@@ -28,7 +28,7 @@
     <property name="plugin.icon" value="images/quicklabel.png"/>
     <property name="plugin.link" value="https://github.com/maripo/JOSM_quicklabel"/>
     <!--<property name="plugin.early" value="..."/>-->
-    <property name="plugin.requires" value="13170"/>
+    <!-- <property name="plugin.requires" value="13170"/> -->
     <!--<property name="plugin.stage" value="..."/>-->
 
     <!-- ** include targets that all plugins have in common ** -->
