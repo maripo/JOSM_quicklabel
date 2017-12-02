@@ -5,15 +5,19 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import org.maripo.josm.quicklabel.QuickLabelDialog.QuickLabelDialogListener;
 import org.openstreetmap.josm.actions.JosmAction;
+import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.MainMenu;
+import org.openstreetmap.josm.gui.layer.Layer;
+import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 import org.openstreetmap.josm.tools.Shortcut;
 
 
-public class QuickLabelPlugin extends Plugin  {
+public class QuickLabelPlugin extends Plugin implements QuickLabelDialogListener  {
 	
     public QuickLabelPlugin(PluginInformation info) {
         super(info);
@@ -32,9 +36,31 @@ public class QuickLabelPlugin extends Plugin  {
     	}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new QuickLabelDialog().showDialog();
+			QuickLabelDialog dialog = new QuickLabelDialog();
+			dialog.setListener(QuickLabelPlugin.this);
+			dialog.showDialog();
 		}
     	
     }
+
+	@Override
+	public void onConfChange() {
+		for (Layer layer: MainApplication.getLayerManager().getLayers()) {
+			if (layer instanceof OsmDataLayer) {
+				this.clearLayerCache((OsmDataLayer)layer);
+			}
+		}
+	}
+
+	private void clearLayerCache(OsmDataLayer layer) {
+		for (OsmPrimitive primitive: layer.data.allNonDeletedPrimitives()) {
+			primitive.clearCachedStyle();
+		}
+		
+	}
+
+	@Override
+	public void onCancel() {
+	}
 
 }

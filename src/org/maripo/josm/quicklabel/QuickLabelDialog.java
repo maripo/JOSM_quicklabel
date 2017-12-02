@@ -11,11 +11,13 @@ import java.awt.event.KeyListener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.openstreetmap.josm.Main;
@@ -24,8 +26,14 @@ import org.openstreetmap.josm.gui.mappaint.styleelement.LabelCompositionStrategy
 import org.openstreetmap.josm.gui.mappaint.styleelement.TextLabel;
 import org.openstreetmap.josm.spi.preferences.Config;
 import org.openstreetmap.josm.tools.GBC;
+import org.openstreetmap.josm.tools.LanguageInfo;
 
 public class QuickLabelDialog extends ExtendedDialog {
+	
+	interface QuickLabelDialogListener {
+		public void onConfChange();
+		public void onCancel();
+	}
 
 	// Preferences keys for default conf
 	private static final String PREF_KEY_DEFAULT_MAIN_LABEL_ORDER = "mappaint.nameOrder";
@@ -35,24 +43,58 @@ public class QuickLabelDialog extends ExtendedDialog {
 	private static final String PREF_KEY_QUICKLABEL_MAIN_LABEL_ORDER = "quicklabel.nameOrder";
 	private static final String PREF_KEY_QUICKLABEL_SUB_LABEL_ORDER = "quicklabel.nameComplementOrder";
 
+    private static final String[] DEFAULT_NAME_TAGS = {
+        "name:" + LanguageInfo.getJOSMLocaleCode(),
+        "name",
+        "int_name",
+        "distance",
+        "ref",
+        "operator",
+        "brand",
+        "addr:housenumber"
+    };
+
+    private static final String[] DEFAULT_NAME_COMPLEMENT_TAGS = {
+        "capacity"
+    };
+    
+    private QuickLabelDialogListener listener = null;
+	public void setListener(QuickLabelDialogListener listener) {
+		this.listener = listener;
+	}
+
 	class Conf {
 
 		private JTextArea textarea;
 		private String prefKeyDefault;
 		private String prefKeyQuicklabel;
 		private String title;
+		private List<String> defautTags;
 
-		public Conf(String prefKeyDefault, String prefKeyQuicklabel, String title) {
+		public Conf(String prefKeyDefault, String prefKeyQuicklabel, String[] defaultTags, String title) {
 			this.prefKeyDefault = prefKeyDefault;
 			this.prefKeyQuicklabel = prefKeyQuicklabel;
+			this.defautTags = Arrays.asList(defaultTags);
 			this.title = title;
 		}
 
 		public JPanel getPanel() {
 			List<String> savedDefault = Config.getPref().getList(prefKeyQuicklabel,
-					Config.getPref().getList(prefKeyDefault, new ArrayList<String>()));
+					Config.getPref().getList(prefKeyDefault, defautTags));
 			JPanel panel = new JPanel(new GridBagLayout());
-			panel.add(new JLabel(title), GBC.eol());
+			
+			panel.add(new JLabel(title), GBC.std());
+			JButton restoreButton = new JButton(tr("Restore default"));
+			
+			restoreButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					loadDefault();
+				}
+			});
+			panel.add(restoreButton, GBC.eol());
+			
 			textarea = new JTextArea(6, 15);
 			if (savedDefault != null && !savedDefault.isEmpty()) {
 				textarea.setText(String.join("\n", savedDefault.toArray(new String[0])));
@@ -75,8 +117,19 @@ public class QuickLabelDialog extends ExtendedDialog {
 					}
 				}
 			});
-			panel.add(textarea, GBC.eol());
+
+			final JScrollPane scrolll = new JScrollPane(textarea);
+			panel.add(scrolll, GBC.eol().fill());
 			return panel;
+		}
+
+		protected void loadDefault() {
+			List<String> defaultTags = Config.getPref().getList(prefKeyDefault, defautTags);
+			if (defaultTags!=null) {
+				textarea.setText(String.join("\n", defaultTags.toArray(new String[0])));
+			}
+			
+			
 		}
 		List<String> prevValues = null;
 		
@@ -110,11 +163,11 @@ public class QuickLabelDialog extends ExtendedDialog {
 
 	}
 
-	Conf confSub = new Conf(PREF_KEY_DEFAULT_SUB_LABEL_ORDER, PREF_KEY_QUICKLABEL_SUB_LABEL_ORDER, 
-			tr("Sub"));
 
 	Conf confMain = new Conf(PREF_KEY_DEFAULT_MAIN_LABEL_ORDER, PREF_KEY_QUICKLABEL_MAIN_LABEL_ORDER, 
-			tr("Main"));
+			DEFAULT_NAME_TAGS, tr("Main"));
+	Conf confSub = new Conf(PREF_KEY_DEFAULT_SUB_LABEL_ORDER, PREF_KEY_QUICKLABEL_SUB_LABEL_ORDER, 
+			DEFAULT_NAME_COMPLEMENT_TAGS, tr("Sub"));
 
 	public QuickLabelDialog() {
 		super(Main.parent, "QuickLabel");
@@ -191,14 +244,23 @@ public class QuickLabelDialog extends ExtendedDialog {
 		confMain.postApply();
 		confSub.postApply();
 		dispose();
+		if (listener!=null) {
+			listener.onConfChange();
+		}
 	}
 	
 	private void reset () {
 		reloadStrategy();
 		dispose();
+		if (listener!=null) {
+			listener.onConfChange();
+		}
 	}
 
 	private void cancel() {
 		dispose();
+		if (listener!=null) {
+			listener.onCancel();
+		}
 	}
 }
