@@ -1,6 +1,7 @@
 package org.maripo.josm.quicklabel;
 
 import static org.openstreetmap.josm.tools.I18n.tr;
+import static org.openstreetmap.josm.tools.I18n.trc;
 
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -27,6 +28,7 @@ import org.openstreetmap.josm.gui.mappaint.styleelement.LabelCompositionStrategy
 import org.openstreetmap.josm.gui.mappaint.styleelement.TextLabel;
 import org.openstreetmap.josm.spi.preferences.Config;
 import org.openstreetmap.josm.tools.GBC;
+import org.openstreetmap.josm.tools.ImageProvider;
 import org.openstreetmap.josm.tools.LanguageInfo;
 
 /**
@@ -220,8 +222,7 @@ public class QuickLabelDialog extends ExtendedDialog {
 				applyAll();
 			}
 		});
-
-		JButton resetButton = new JButton(tr("Reset"));
+		JButton resetButton = new JButton(trc("quicklabel", "Reset"));
 		resetButton.setToolTipText(tr("Reset QuickLabel config and show default labels"));
 		resetButton.addActionListener(new ActionListener() {
 			@Override
@@ -240,6 +241,10 @@ public class QuickLabelDialog extends ExtendedDialog {
 
 			}
 		});
+
+		applyButton.setIcon(ImageProvider.get("ok"));
+		resetButton.setIcon(ImageProvider.get("undo"));
+		cancelButton.setIcon(ImageProvider.get("cancel"));
 		panel.add(applyButton, GBC.std());
 		panel.add(resetButton, GBC.std());
 		panel.add(cancelButton, GBC.eol());
