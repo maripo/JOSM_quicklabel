@@ -17,6 +17,7 @@ After installation, you can call the label customization dialog by choosing "Dat
  * You want to complete "cuisine" tags of all restaurants in your town
  * You are interested in "surface"  or values more than "capacity" of parking areas
  * You review roads' details by comparing surface, sidewalks and maxspeed values
+ * You want to edit multi-language tags by temporarily boosting priority of name:* 
 
 ## Developer
 

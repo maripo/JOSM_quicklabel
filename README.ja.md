@@ -12,11 +12,12 @@
  
  ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/screenshot_en2.png)
  
-## こんな時に便利です
+## 役に立つシチュエーション
 
  * 地域の飲食店の "cuisine" タグを充実させたいとき
  * 駐車場の "capacity" よりも "parking" や "surface" タグをチェックしたいとき
  * 地域全体の道路の路面・速度制限・歩道などの情報を網羅的にレビューしたいとき
+ * 一時的に多言語の名称を優先的に表示し、多言語対応を進めたいとき
 
 # 開発者
 
