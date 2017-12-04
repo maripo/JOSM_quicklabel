@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.ExtendedDialog;
@@ -28,6 +29,11 @@ import org.openstreetmap.josm.spi.preferences.Config;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.LanguageInfo;
 
+/**
+ * QuickLabel configuration dialog
+ * @author maripo
+ *
+ */
 public class QuickLabelDialog extends ExtendedDialog {
 	
 	interface QuickLabelDialogListener {
@@ -78,13 +84,17 @@ public class QuickLabelDialog extends ExtendedDialog {
 			this.title = title;
 		}
 
+		/**
+		 * Initialize UI widgets
+		 * @return Panel containing all widgets
+		 */
 		public JPanel getPanel() {
 			List<String> savedDefault = Config.getPref().getList(prefKeyQuicklabel,
 					Config.getPref().getList(prefKeyDefault, defautTags));
-			JPanel panel = new JPanel(new GridBagLayout());
+			final JPanel panel = new JPanel(new GridBagLayout());
 			
 			panel.add(new JLabel(title), GBC.std());
-			JButton restoreButton = new JButton(tr("Restore default"));
+			final JButton restoreButton = new JButton(tr("Restore default"));
 			
 			restoreButton.addActionListener(new ActionListener() {
 				
@@ -103,10 +113,12 @@ public class QuickLabelDialog extends ExtendedDialog {
 
 				@Override
 				public void keyTyped(KeyEvent e) {
+					// Nothing to do
 				}
 
 				@Override
 				public void keyReleased(KeyEvent e) {
+					// Nothing to do
 				}
 
 				@Override
@@ -114,23 +126,33 @@ public class QuickLabelDialog extends ExtendedDialog {
 					if (e.getKeyCode() == KeyEvent.VK_ENTER && ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0
 							|| (e.getModifiersEx() & InputEvent.META_DOWN_MASK) != 0)) {
 						applyAll();
+					} else if (e.getKeyCode()==KeyEvent.VK_TAB) {
+						switchFocus();
 					}
 				}
 			});
+			// Suppress input with "TAB" key strokes
+			textarea.getInputMap().put(KeyStroke.getKeyStroke("TAB"), "none");
 
 			final JScrollPane scrolll = new JScrollPane(textarea);
 			panel.add(scrolll, GBC.eol().fill());
 			return panel;
 		}
 
+		JTextArea tabNextTextarea = null;
+		private void switchFocus() {
+			if (tabNextTextarea!=null) {
+				tabNextTextarea.requestFocus();
+			}
+		}
+		
 		protected void loadDefault() {
 			List<String> defaultTags = Config.getPref().getList(prefKeyDefault, defautTags);
 			if (defaultTags!=null) {
 				textarea.setText(String.join("\n", defaultTags.toArray(new String[0])));
 			}
-			
-			
 		}
+		
 		List<String> prevValues = null;
 		
 		// Replace with new value temporarily
@@ -157,6 +179,9 @@ public class QuickLabelDialog extends ExtendedDialog {
 			
 		}
 
+		/**
+		 * Set focus to the textarea
+		 */
 		public void focus() {
 			textarea.requestFocus();
 		}
@@ -182,6 +207,8 @@ public class QuickLabelDialog extends ExtendedDialog {
 		JPanel formContainer = new JPanel(new GridBagLayout());
 		formContainer.add(confMain.getPanel(), GBC.std().insets(5));
 		formContainer.add(confSub.getPanel(), GBC.eol().insets(5));
+		confMain.tabNextTextarea = confSub.textarea;
+		confSub.tabNextTextarea = confMain.textarea;
 		panel.add(formContainer,GBC.eol());
 
 		JButton applyButton = new JButton(tr("Apply"));
