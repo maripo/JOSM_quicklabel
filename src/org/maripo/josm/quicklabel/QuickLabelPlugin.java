@@ -22,7 +22,7 @@ public class QuickLabelPlugin extends Plugin implements QuickLabelDialogListener
     public QuickLabelPlugin(PluginInformation info) {
         super(info);
         Action act = new Action();
-        MainMenu.add(MainApplication.getMenu().dataMenu, act);
+        MainMenu.add(MainApplication.getMenu().viewMenu, act);
     }
     
     class Action extends JosmAction {

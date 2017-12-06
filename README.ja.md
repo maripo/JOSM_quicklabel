@@ -4,7 +4,9 @@
 
 [English](https://github.com/maripo/JOSM_quicklabel/blob/master/README.md)
 
-インストールすると、"データ" > "QuickLabel" またはショートカット Command+Shift+Lでラベルをカスタマイズするウィンドウを表示することができます。
+インストールすると、"表示" > "QuickLabel" またはショートカット Command+Shift+Lでラベルをカスタマイズするウィンドウを表示することができます。
+
+注: 初期のバージョンでは "データ" メニューに含まれておりましたが、より適切な "表示" の下に移動しました。
 
  ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/screenshot_en0.png)
  
