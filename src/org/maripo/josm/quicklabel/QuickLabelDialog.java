@@ -48,9 +48,15 @@ public class QuickLabelDialog extends ExtendedDialog {
 	private static final String PREF_KEY_DEFAULT_SUB_LABEL_ORDER = "mappaint.nameComplementOrder";
 
 	// Preferences keys for custom conf
-	private static final String PREF_KEY_QUICKLABEL_MAIN_LABEL_ORDER = "quicklabel.nameOrder";
-	private static final String PREF_KEY_QUICKLABEL_SUB_LABEL_ORDER = "quicklabel.nameComplementOrder";
+	public static final String PREF_KEY_QUICKLABEL_MAIN_LABEL_ORDER = "quicklabel.nameOrder";
+	public static final String PREF_KEY_QUICKLABEL_SUB_LABEL_ORDER = "quicklabel.nameComplementOrder";
+	// For future use. Currently it's used to determine if the user need "Data->View" alert
+	public static final String PREF_KEY_QUICKLABEL_APPLY_ON_START = "quicklabel.applyOnStart";
 
+
+	public static final int APPLY_ON_START_NO = 0;
+	public static final int APPLY_ON_START_YES = 1;
+	
     private static final String[] DEFAULT_NAME_TAGS = {
         "name:" + LanguageInfo.getJOSMLocaleCode(),
         "name",
@@ -275,6 +281,7 @@ public class QuickLabelDialog extends ExtendedDialog {
 		reloadStrategy();
 		confMain.postApply();
 		confSub.postApply();
+		Config.getPref().putInt(PREF_KEY_QUICKLABEL_APPLY_ON_START, APPLY_ON_START_NO);
 		dispose();
 		if (listener!=null) {
 			listener.onConfChange();
