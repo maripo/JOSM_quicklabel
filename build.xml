@@ -23,7 +23,7 @@
     -->
     <property name="plugin.author" value="Maripo GODA"/>
     <property name="plugin.class" value="org.maripo.josm.quicklabel.QuickLabelPlugin"/>
-    <property name="plugin.description" value="This plugin shows specified tags next to objects."/>
+    <property name="plugin.description" value="This plugin shows specified tags next to or inside objects."/>
     
     <property name="plugin.icon" value="images/quicklabel.png"/>
     <property name="plugin.link" value="https://github.com/maripo/JOSM_quicklabel"/>
