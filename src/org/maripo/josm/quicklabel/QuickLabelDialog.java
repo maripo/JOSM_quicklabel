@@ -225,6 +225,7 @@ public class QuickLabelDialog extends ExtendedDialog {
 		applyOnStartCheckbox = new JCheckBox();
 		applyOnStartContainer.add(applyOnStartCheckbox, GBC.std());
 		applyOnStartContainer.add(new JLabel(tr("Apply on startup")));
+		applyOnStartCheckbox.setSelected(Config.getPref().getInt(PREF_KEY_QUICKLABEL_APPLY_ON_START, 0)==APPLY_ON_START_YES);
 		panel.add(applyOnStartContainer, GBC.eol());
 
 		JButton applyButton = new JButton(tr("Apply"));
@@ -289,7 +290,7 @@ public class QuickLabelDialog extends ExtendedDialog {
 		reloadStrategy();
 		confMain.postApply();
 		confSub.postApply();
-		Config.getPref().putInt(PREF_KEY_QUICKLABEL_APPLY_ON_START, APPLY_ON_START_NO);
+		Config.getPref().putInt(PREF_KEY_QUICKLABEL_APPLY_ON_START, applyOnStartCheckbox.isSelected()?APPLY_ON_START_YES:APPLY_ON_START_NO);
 		dispose();
 		if (listener!=null) {
 			listener.onConfChange();
