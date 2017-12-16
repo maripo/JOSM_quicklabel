@@ -5,11 +5,14 @@ import static org.openstreetmap.josm.tools.I18n.tr;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JOptionPane;
+
 import org.maripo.josm.quicklabel.QuickLabelDialog.QuickLabelDialogListener;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.MainMenu;
+import org.openstreetmap.josm.gui.Notification;
 import org.openstreetmap.josm.gui.layer.Layer;
 import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 import org.openstreetmap.josm.plugins.Plugin;
@@ -54,6 +57,13 @@ public class QuickLabelPlugin extends Plugin implements QuickLabelDialogListener
 			QuickLabelDialog dialog = new QuickLabelDialog();
 			dialog.setListener(QuickLabelPlugin.this);
 			dialog.showDialog();
+
+			/*
+            new Notification("Hello Notification")
+                    .setIcon(JOptionPane.INFORMATION_MESSAGE)
+                    .setDuration(Notification.TIME_DEFAULT)
+                    .show();
+                    */
 		}
 
 	}

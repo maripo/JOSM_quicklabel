@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -201,7 +202,7 @@ public class QuickLabelDialog extends ExtendedDialog {
 			DEFAULT_NAME_TAGS, tr("Main"));
 	Conf confSub = new Conf(PREF_KEY_DEFAULT_SUB_LABEL_ORDER, PREF_KEY_QUICKLABEL_SUB_LABEL_ORDER, 
 			DEFAULT_NAME_COMPLEMENT_TAGS, tr("Sub"));
-
+	JCheckBox applyOnStartCheckbox;
 	public QuickLabelDialog() {
 		super(Main.parent, "QuickLabel");
 		this.setAlwaysOnTop(true);
@@ -218,6 +219,13 @@ public class QuickLabelDialog extends ExtendedDialog {
 		confMain.tabNextTextarea = confSub.textarea;
 		confSub.tabNextTextarea = confMain.textarea;
 		panel.add(formContainer,GBC.eol());
+		
+		
+		JPanel applyOnStartContainer = new JPanel(new GridBagLayout());
+		applyOnStartCheckbox = new JCheckBox();
+		applyOnStartContainer.add(applyOnStartCheckbox, GBC.std());
+		applyOnStartContainer.add(new JLabel(tr("Apply on startup")));
+		panel.add(applyOnStartContainer, GBC.eol());
 
 		JButton applyButton = new JButton(tr("Apply"));
 		applyButton.setToolTipText(tr("Apply change and show customized labels"));
