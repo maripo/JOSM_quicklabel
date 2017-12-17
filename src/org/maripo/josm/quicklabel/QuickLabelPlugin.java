@@ -87,7 +87,7 @@ public class QuickLabelPlugin extends Plugin implements QuickLabelDialogListener
 	@Override
 	public void layerAdded(LayerAddEvent e) {
 		if (e.getAddedLayer() instanceof OsmDataLayer) {
-	        new Notification("Your QuickLabel config is applied.")
+	        new Notification(tr("Your QuickLabel config is applied."))
 	        .setIcon(JOptionPane.INFORMATION_MESSAGE)
 	        .setDuration(Notification.TIME_DEFAULT)
 	        .show();

@@ -34,7 +34,7 @@ public class QuickLabelConfigItem {
 	}
 	// Stash default value and temporarily set textbox value
 	void preApply () {
-		this.prevValues = Config.getPref().getList(prefKeyDefault, null);
+		prevValues = Config.getPref().getList(prefKeyDefault, null);
 		Config.getPref().putList(prefKeyDefault, valuesToApply);
 		Config.getPref().putList(prefKey, valuesToApply);
 		

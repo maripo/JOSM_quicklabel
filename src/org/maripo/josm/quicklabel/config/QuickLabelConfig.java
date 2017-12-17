@@ -89,7 +89,7 @@ public class QuickLabelConfig {
 		reloadStrategy();
 		// Restore pref values
 		itemMainLabel.postApply();
-		itemMainLabel.postApply();
+		itemSubLabel.postApply();
 	}
 	
 	/**

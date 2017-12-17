@@ -75,7 +75,6 @@ public class QuickLabelDialog extends ExtendedDialog {
 			
 			panel.add(new JLabel(title), GBC.std());
 			final JButton restoreButton = new JButton(tr("Restore default"));
-			
 			restoreButton.addActionListener(new ActionListener() {
 				
 				@Override
@@ -132,7 +131,10 @@ public class QuickLabelDialog extends ExtendedDialog {
 		protected void loadDefault() {
 			List<String> defaultTags = conf.getDefaultValue();
 			if (defaultTags!=null) {
+				System.out.println("Default tags=" + defaultTags);
 				textarea.setText(String.join("\n", defaultTags.toArray(new String[0])));
+			} else {
+				System.out.println("Default tags null");
 			}
 		}
 
