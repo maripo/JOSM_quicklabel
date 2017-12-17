@@ -8,34 +8,37 @@ import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 import org.maripo.josm.quicklabel.QuickLabelDialog.QuickLabelDialogListener;
+import org.maripo.josm.quicklabel.config.QuickLabelConfig;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.MainMenu;
 import org.openstreetmap.josm.gui.Notification;
 import org.openstreetmap.josm.gui.layer.Layer;
+import org.openstreetmap.josm.gui.layer.LayerManager.LayerAddEvent;
+import org.openstreetmap.josm.gui.layer.LayerManager.LayerChangeListener;
+import org.openstreetmap.josm.gui.layer.LayerManager.LayerOrderChangeEvent;
+import org.openstreetmap.josm.gui.layer.LayerManager.LayerRemoveEvent;
 import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
 import org.openstreetmap.josm.spi.preferences.Config;
 import org.openstreetmap.josm.tools.Shortcut;
 
-public class QuickLabelPlugin extends Plugin implements QuickLabelDialogListener {
+public class QuickLabelPlugin extends Plugin implements QuickLabelDialogListener, LayerChangeListener {
 
 	public QuickLabelPlugin(PluginInformation info) {
 		super(info);
-		if (isUserOfOlderVersion()) {
+		QuickLabelConfig conf = QuickLabelConfig.getInstance();
+		if (conf.isUserOfOlderVersion()) {
 			MainMenu.add(MainApplication.getMenu().dataMenu, new Action(true));
 		}
 		MainMenu.add(MainApplication.getMenu().viewMenu, new Action());
-	}
-
-	private boolean isUserOfOlderVersion() {
-		return (
-				!Config.getPref().getList(QuickLabelDialog.PREF_KEY_QUICKLABEL_MAIN_LABEL_ORDER).isEmpty()
-				||
-				!Config.getPref().getList(QuickLabelDialog.PREF_KEY_QUICKLABEL_SUB_LABEL_ORDER).isEmpty())
-				&& Config.getPref().getInt(QuickLabelDialog.PREF_KEY_QUICKLABEL_APPLY_ON_START, -1)==-1;
+		if (conf.isApplyOnStart()) {
+			conf.applySaved();
+			MainApplication.getLayerManager().addLayerChangeListener(this);
+			
+		}
 	}
 
 	class Action extends JosmAction {
@@ -57,13 +60,6 @@ public class QuickLabelPlugin extends Plugin implements QuickLabelDialogListener
 			QuickLabelDialog dialog = new QuickLabelDialog();
 			dialog.setListener(QuickLabelPlugin.this);
 			dialog.showDialog();
-
-			/*
-            new Notification("Hello Notification")
-                    .setIcon(JOptionPane.INFORMATION_MESSAGE)
-                    .setDuration(Notification.TIME_DEFAULT)
-                    .show();
-                    */
 		}
 
 	}
@@ -86,6 +82,27 @@ public class QuickLabelPlugin extends Plugin implements QuickLabelDialogListener
 
 	@Override
 	public void onCancel() {
+	}
+
+	@Override
+	public void layerAdded(LayerAddEvent e) {
+		if (e.getAddedLayer() instanceof OsmDataLayer) {
+	        new Notification("Your QuickLabel config is applied.")
+	        .setIcon(JOptionPane.INFORMATION_MESSAGE)
+	        .setDuration(Notification.TIME_DEFAULT)
+	        .show();
+	        MainApplication.getLayerManager().removeLayerChangeListener(this);
+	        
+		}
+		
+	}
+
+	@Override
+	public void layerRemoving(LayerRemoveEvent e) {
+	}
+
+	@Override
+	public void layerOrderChanged(LayerOrderChangeEvent e) {
 	}
 
 }

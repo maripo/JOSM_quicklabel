@@ -23,6 +23,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
+import org.maripo.josm.quicklabel.config.QuickLabelConfig;
+import org.maripo.josm.quicklabel.config.QuickLabelConfigItem;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.mappaint.styleelement.LabelCompositionStrategy;
@@ -44,34 +46,8 @@ public class QuickLabelDialog extends ExtendedDialog {
 		public void onCancel();
 	}
 
-	// Preferences keys for default conf
-	private static final String PREF_KEY_DEFAULT_MAIN_LABEL_ORDER = "mappaint.nameOrder";
-	private static final String PREF_KEY_DEFAULT_SUB_LABEL_ORDER = "mappaint.nameComplementOrder";
 
-	// Preferences keys for custom conf
-	public static final String PREF_KEY_QUICKLABEL_MAIN_LABEL_ORDER = "quicklabel.nameOrder";
-	public static final String PREF_KEY_QUICKLABEL_SUB_LABEL_ORDER = "quicklabel.nameComplementOrder";
-	// For future use. Currently it's used to determine if the user need "Data->View" alert
-	public static final String PREF_KEY_QUICKLABEL_APPLY_ON_START = "quicklabel.applyOnStart";
-
-
-	public static final int APPLY_ON_START_NO = 0;
-	public static final int APPLY_ON_START_YES = 1;
 	
-    private static final String[] DEFAULT_NAME_TAGS = {
-        "name:" + LanguageInfo.getJOSMLocaleCode(),
-        "name",
-        "int_name",
-        "distance",
-        "ref",
-        "operator",
-        "brand",
-        "addr:housenumber"
-    };
-
-    private static final String[] DEFAULT_NAME_COMPLEMENT_TAGS = {
-        "capacity"
-    };
     
     private QuickLabelDialogListener listener = null;
 	public void setListener(QuickLabelDialogListener listener) {
@@ -81,15 +57,11 @@ public class QuickLabelDialog extends ExtendedDialog {
 	class Conf {
 
 		private JTextArea textarea;
-		private String prefKeyDefault;
-		private String prefKeyQuicklabel;
 		private String title;
-		private List<String> defautTags;
+		private QuickLabelConfigItem conf;
 
-		public Conf(String prefKeyDefault, String prefKeyQuicklabel, String[] defaultTags, String title) {
-			this.prefKeyDefault = prefKeyDefault;
-			this.prefKeyQuicklabel = prefKeyQuicklabel;
-			this.defautTags = Arrays.asList(defaultTags);
+		public Conf(QuickLabelConfigItem conf, String title) {
+			this.conf = conf;
 			this.title = title;
 		}
 
@@ -98,8 +70,7 @@ public class QuickLabelDialog extends ExtendedDialog {
 		 * @return Panel containing all widgets
 		 */
 		public JPanel getPanel() {
-			List<String> savedDefault = Config.getPref().getList(prefKeyQuicklabel,
-					Config.getPref().getList(prefKeyDefault, defautTags));
+			List<String> savedTags = conf.getSavedValue();
 			final JPanel panel = new JPanel(new GridBagLayout());
 			
 			panel.add(new JLabel(title), GBC.std());
@@ -115,8 +86,8 @@ public class QuickLabelDialog extends ExtendedDialog {
 			panel.add(restoreButton, GBC.eol());
 			
 			textarea = new JTextArea(6, 15);
-			if (savedDefault != null && !savedDefault.isEmpty()) {
-				textarea.setText(String.join("\n", savedDefault.toArray(new String[0])));
+			if (savedTags != null && !savedTags.isEmpty()) {
+				textarea.setText(String.join("\n", savedTags.toArray(new String[0])));
 			}
 			textarea.addKeyListener(new KeyListener() {
 
@@ -155,37 +126,14 @@ public class QuickLabelDialog extends ExtendedDialog {
 			}
 		}
 		
+		/*
+		 * Reset and load default keys
+		 */
 		protected void loadDefault() {
-			List<String> defaultTags = Config.getPref().getList(prefKeyDefault, defautTags);
+			List<String> defaultTags = conf.getDefaultValue();
 			if (defaultTags!=null) {
 				textarea.setText(String.join("\n", defaultTags.toArray(new String[0])));
 			}
-		}
-		
-		List<String> prevValues = null;
-		
-		// Replace with new value temporarily
-		public void preApply() {
-			List<String> values = new ArrayList<String>();
-
-			String[] lines = textarea.getText().split("\n");
-			for (String line : lines) {
-				if (!line.isEmpty()) {
-					values.add(line);
-				}
-			}
-			if (values.isEmpty()) {
-				return;
-			}
-			
-			prevValues = Config.getPref().getList(prefKeyDefault, null);
-			Config.getPref().putList(prefKeyDefault, values);
-			Config.getPref().putList(prefKeyQuicklabel, values);
-		}
-		/* Restore default key */
-		public void postApply () {
-			Config.getPref().putList(prefKeyDefault, prevValues);
-			
 		}
 
 		/**
@@ -195,13 +143,27 @@ public class QuickLabelDialog extends ExtendedDialog {
 			textarea.requestFocus();
 		}
 
+		/**
+		 * Prepare for applying input values
+		 */
+		public void updateConf() {
+			List<String> values = new ArrayList<String>();
+
+			String[] lines = textarea.getText().split("\n");
+			for (String line : lines) {
+				if (!line.isEmpty()) {
+					values.add(line);
+				}
+			}
+			conf.setValuesToApply(values);
+			
+		}
+
 	}
 
-
-	Conf confMain = new Conf(PREF_KEY_DEFAULT_MAIN_LABEL_ORDER, PREF_KEY_QUICKLABEL_MAIN_LABEL_ORDER, 
-			DEFAULT_NAME_TAGS, tr("Main"));
-	Conf confSub = new Conf(PREF_KEY_DEFAULT_SUB_LABEL_ORDER, PREF_KEY_QUICKLABEL_SUB_LABEL_ORDER, 
-			DEFAULT_NAME_COMPLEMENT_TAGS, tr("Sub"));
+	
+	Conf confMain = new Conf(QuickLabelConfig.getInstance().getItemMainLabel(), tr("Main"));
+	Conf confSub = new Conf(QuickLabelConfig.getInstance().getItemSubLabel(), tr("Sub"));
 	JCheckBox applyOnStartCheckbox;
 	public QuickLabelDialog() {
 		super(Main.parent, "QuickLabel");
@@ -225,7 +187,7 @@ public class QuickLabelDialog extends ExtendedDialog {
 		applyOnStartCheckbox = new JCheckBox();
 		applyOnStartContainer.add(applyOnStartCheckbox, GBC.std());
 		applyOnStartContainer.add(new JLabel(tr("Apply on startup")));
-		applyOnStartCheckbox.setSelected(Config.getPref().getInt(PREF_KEY_QUICKLABEL_APPLY_ON_START, 0)==APPLY_ON_START_YES);
+		applyOnStartCheckbox.setSelected(QuickLabelConfig.getInstance().isApplyOnStart());
 		panel.add(applyOnStartContainer, GBC.eol());
 
 		JButton applyButton = new JButton(tr("Apply"));
@@ -267,30 +229,13 @@ public class QuickLabelDialog extends ExtendedDialog {
 		confMain.focus();
 	}
 	
-	// Reload TextLabel.AUTO_LABEL_COMPOSITION_STRATEGY by reflection
-	private void reloadStrategy () {
-		LabelCompositionStrategy strategy = TextLabel.AUTO_LABEL_COMPOSITION_STRATEGY;
-		try {
-			Method method = strategy.getClass().getMethod("initNameTagsFromPreferences");
-			method.invoke(strategy);
-		} catch (NoSuchMethodException | SecurityException e1) {
-			e1.printStackTrace();
-		} catch (IllegalAccessException e1) {
-			e1.printStackTrace();
-		} catch (IllegalArgumentException e1) {
-			e1.printStackTrace();
-		} catch (InvocationTargetException e1) {
-			e1.printStackTrace();
-		}
-	}
 
 	private void applyAll() {
-		confMain.preApply();
-		confSub.preApply();
-		reloadStrategy();
-		confMain.postApply();
-		confSub.postApply();
-		Config.getPref().putInt(PREF_KEY_QUICKLABEL_APPLY_ON_START, applyOnStartCheckbox.isSelected()?APPLY_ON_START_YES:APPLY_ON_START_NO);
+		confMain.updateConf();
+		confSub.updateConf();
+		QuickLabelConfig.getInstance().apply();
+		Config.getPref().putInt(QuickLabelConfig.PREF_KEY_QUICKLABEL_APPLY_ON_START, applyOnStartCheckbox.isSelected()?
+				QuickLabelConfig.APPLY_ON_START_YES:QuickLabelConfig.APPLY_ON_START_NO);
 		dispose();
 		if (listener!=null) {
 			listener.onConfChange();
@@ -298,7 +243,7 @@ public class QuickLabelDialog extends ExtendedDialog {
 	}
 	
 	private void reset () {
-		reloadStrategy();
+		QuickLabelConfig.getInstance().applyDefault();
 		dispose();
 		if (listener!=null) {
 			listener.onConfChange();
