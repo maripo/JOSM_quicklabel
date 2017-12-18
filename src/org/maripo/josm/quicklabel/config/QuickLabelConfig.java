@@ -1,8 +1,10 @@
 package org.maripo.josm.quicklabel.config;
 
+import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.maripo.josm.quicklabel.strategy.QuickLabelCompositionStrategy;
 import org.openstreetmap.josm.gui.mappaint.styleelement.LabelCompositionStrategy;
 import org.openstreetmap.josm.gui.mappaint.styleelement.TextLabel;
 import org.openstreetmap.josm.spi.preferences.Config;
@@ -64,8 +66,9 @@ public class QuickLabelConfig {
 	// Reload TextLabel.AUTO_LABEL_COMPOSITION_STRATEGY by reflection
 	private void reloadStrategy () {
 		LabelCompositionStrategy strategy = TextLabel.AUTO_LABEL_COMPOSITION_STRATEGY;
+		String methodName = (strategy instanceof QuickLabelCompositionStrategy)?"initNameTagsFromPreferences":"initNameTagsFromPreferences2";
 		try {
-			Method method = strategy.getClass().getMethod("initNameTagsFromPreferences");
+			Method method = strategy.getClass().getMethod(methodName);
 			method.invoke(strategy);
 		} catch (NoSuchMethodException | SecurityException e1) {
 			e1.printStackTrace();

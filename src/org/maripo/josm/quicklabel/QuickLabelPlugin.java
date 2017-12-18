@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import org.maripo.josm.quicklabel.QuickLabelDialog.QuickLabelDialogListener;
 import org.maripo.josm.quicklabel.config.QuickLabelConfig;
+import org.maripo.josm.quicklabel.strategy.QuickLabelCompositionStrategy;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.gui.MainApplication;
@@ -22,7 +23,6 @@ import org.openstreetmap.josm.gui.layer.LayerManager.LayerRemoveEvent;
 import org.openstreetmap.josm.gui.layer.OsmDataLayer;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
-import org.openstreetmap.josm.spi.preferences.Config;
 import org.openstreetmap.josm.tools.Shortcut;
 
 public class QuickLabelPlugin extends Plugin implements QuickLabelDialogListener, LayerChangeListener {
@@ -39,6 +39,8 @@ public class QuickLabelPlugin extends Plugin implements QuickLabelDialogListener
 			MainApplication.getLayerManager().addLayerChangeListener(this);
 			
 		}
+		
+		QuickLabelCompositionStrategy.reflectionTest();
 	}
 
 	class Action extends JosmAction {
