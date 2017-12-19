@@ -12,8 +12,7 @@ import org.openstreetmap.josm.spi.preferences.Config;
 import org.openstreetmap.josm.tools.LanguageInfo;
 
 public class QuickLabelConfig {
-	private LabelCompositionStrategy defaultStrategy;
-	private QuickLabelCompositionStrategy quickLabelStrategy;
+	private QuickLabelCompositionStrategy strategy;
 	
 	private static QuickLabelConfig instance = null;
 
@@ -56,8 +55,10 @@ public class QuickLabelConfig {
 	}
 	
 	private QuickLabelConfig () {
-		defaultStrategy = TextLabel.AUTO_LABEL_COMPOSITION_STRATEGY;
-		quickLabelStrategy = new QuickLabelCompositionStrategy();
+	}
+	public void initCustomStrategy() {
+		strategy = new QuickLabelCompositionStrategy();
+		setStrategy(strategy);
 	}
 	/**
 	 * Singleton
@@ -74,13 +75,13 @@ public class QuickLabelConfig {
 	 * Apply values set by QuickLabelConfig#setValuesToApply()
 	 */
 	public void applyQuickLabelConf() {
-		setStrategy(quickLabelStrategy);
+		strategy.useQuickLabelComposer();
 	}
 	/**
 	 * Reset. Apply default strategy.
 	 */
 	public void applyDefault() {
-		setStrategy(defaultStrategy);
+		strategy.useDefaultComposer();
 	}
 	/**
 	 * Replace TextLabel.AUTO_LABEL_COMPOSITION_STRATEGY with given object
@@ -131,8 +132,8 @@ public class QuickLabelConfig {
 		System.out.println("QuickLabelConfig.applySaved");
 		itemMainLabel.saveValues(itemMainLabel.getSavedValue());
 		itemSubLabel.saveValues(itemSubLabel.getSavedValue());
-		setStrategy(quickLabelStrategy);
-		quickLabelStrategy.loadFromPreferences();
+		strategy.useQuickLabelComposer();
+		strategy.loadFromPreferences();
 		
 	}
 }

@@ -30,6 +30,7 @@ public class QuickLabelPlugin extends Plugin implements QuickLabelDialogListener
 	public QuickLabelPlugin(PluginInformation info) {
 		super(info);
 		QuickLabelConfig conf = QuickLabelConfig.getInstance();
+		conf.initCustomStrategy();
 		if (conf.isUserOfOlderVersion()) {
 			MainMenu.add(MainApplication.getMenu().dataMenu, new Action(true));
 		}
