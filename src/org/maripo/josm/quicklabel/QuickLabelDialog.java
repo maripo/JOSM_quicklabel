@@ -45,9 +45,6 @@ public class QuickLabelDialog extends ExtendedDialog {
 		public void onConfChange();
 		public void onCancel();
 	}
-
-
-	
     
     private QuickLabelDialogListener listener = null;
 	public void setListener(QuickLabelDialogListener listener) {
@@ -148,7 +145,7 @@ public class QuickLabelDialog extends ExtendedDialog {
 		/**
 		 * Prepare for applying input values
 		 */
-		public void updateConf() {
+		public void saveConf() {
 			List<String> values = new ArrayList<String>();
 
 			String[] lines = textarea.getText().split("\n");
@@ -157,7 +154,7 @@ public class QuickLabelDialog extends ExtendedDialog {
 					values.add(line);
 				}
 			}
-			conf.setValuesToApply(values);
+			conf.saveValues(values);
 			
 		}
 
@@ -233,19 +230,27 @@ public class QuickLabelDialog extends ExtendedDialog {
 	
 
 	private void applyAll() {
-		confMain.updateConf();
-		confSub.updateConf();
-		QuickLabelConfig.getInstance().apply();
-		Config.getPref().putInt(QuickLabelConfig.PREF_KEY_QUICKLABEL_APPLY_ON_START, applyOnStartCheckbox.isSelected()?
-				QuickLabelConfig.APPLY_ON_START_YES:QuickLabelConfig.APPLY_ON_START_NO);
+		confMain.saveConf();
+		confSub.saveConf();
+		QuickLabelConfig.getInstance().applySaved();
+		saveApplyOnStartConf();
 		dispose();
 		if (listener!=null) {
 			listener.onConfChange();
 		}
 	}
+
+
+	private void saveApplyOnStartConf() {
+		int val = applyOnStartCheckbox.isSelected()?
+				QuickLabelConfig.APPLY_ON_START_YES:QuickLabelConfig.APPLY_ON_START_NO;
+		System.out.println("QuickLabelDialog.saveApplyOnStartConf val=" + val);
+		Config.getPref().putInt(QuickLabelConfig.PREF_KEY_QUICKLABEL_APPLY_ON_START, val);
+	}
 	
 	private void reset () {
 		QuickLabelConfig.getInstance().applyDefault();
+		saveApplyOnStartConf();
 		dispose();
 		if (listener!=null) {
 			listener.onConfChange();

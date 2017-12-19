@@ -37,10 +37,9 @@ public class QuickLabelPlugin extends Plugin implements QuickLabelDialogListener
 		if (conf.isApplyOnStart()) {
 			conf.applySaved();
 			MainApplication.getLayerManager().addLayerChangeListener(this);
-			
 		}
 		
-		QuickLabelCompositionStrategy.reflectionTest();
+		
 	}
 
 	class Action extends JosmAction {
@@ -68,6 +67,7 @@ public class QuickLabelPlugin extends Plugin implements QuickLabelDialogListener
 
 	@Override
 	public void onConfChange() {
+		System.out.println("QuickLabelPlugin.onConfChange");
 		for (Layer layer : MainApplication.getLayerManager().getLayers()) {
 			if (layer instanceof OsmDataLayer) {
 				this.clearLayerCache((OsmDataLayer) layer);

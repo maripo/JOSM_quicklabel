@@ -10,8 +10,6 @@ public class QuickLabelConfigItem {
 	private String prefKeyDefault;
 	private String prefKey;
 	private List<String> defaultNameTags;
-	private List<String> valuesToApply;
-	private List<String> prevValues;
 
 	public QuickLabelConfigItem(String prefKeyDefault, String prefKey, String[] defaultNameTags) {
 		this.prefKeyDefault = prefKeyDefault;
@@ -28,21 +26,9 @@ public class QuickLabelConfigItem {
 		return Config.getPref().getList(prefKeyDefault, defaultNameTags);
 	}
 
-	public void setValuesToApply(List<String> values) {
-		this.valuesToApply = values;
+	public void saveValues (List<String> values) {
+		Config.getPref().putList(prefKey, values);
 		
 	}
-	// Stash default value and temporarily set textbox value
-	void preApply () {
-		prevValues = Config.getPref().getList(prefKeyDefault, null);
-		Config.getPref().putList(prefKeyDefault, valuesToApply);
-		Config.getPref().putList(prefKey, valuesToApply);
-		
-	}
-	// Restore values
-	void postApply () {
-		Config.getPref().putList(prefKeyDefault, prevValues);
-	}
-
 
 }
