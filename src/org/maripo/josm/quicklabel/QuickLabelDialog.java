@@ -3,6 +3,7 @@ package org.maripo.josm.quicklabel;
 import static org.openstreetmap.josm.tools.I18n.tr;
 import static org.openstreetmap.josm.tools.I18n.trc;
 
+import java.awt.Component;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +26,7 @@ import javax.swing.KeyStroke;
 
 import org.maripo.josm.quicklabel.config.QuickLabelConfig;
 import org.maripo.josm.quicklabel.config.QuickLabelConfigItem;
+import org.maripo.josm.quicklabel.strategy.QuickLabelCompositionStrategy;
 import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.gui.mappaint.styleelement.LabelCompositionStrategy;
@@ -163,7 +165,11 @@ public class QuickLabelDialog extends ExtendedDialog {
 	
 	Conf confMain = new Conf(QuickLabelConfig.getInstance().getItemMainLabel(), tr("Main"));
 	Conf confSub = new Conf(QuickLabelConfig.getInstance().getItemSubLabel(), tr("Sub"));
+	
 	JCheckBox applyOnStartCheckbox;
+	JCheckBox showTagKeyCheckbox;
+	JCheckBox showParenthesesCheckbox;
+	
 	public QuickLabelDialog() {
 		super(Main.parent, "QuickLabel");
 		this.setAlwaysOnTop(true);
@@ -181,13 +187,21 @@ public class QuickLabelDialog extends ExtendedDialog {
 		confSub.tabNextTextarea = confMain.textarea;
 		panel.add(formContainer,GBC.eol());
 		
+
 		
-		JPanel applyOnStartContainer = new JPanel(new GridBagLayout());
 		applyOnStartCheckbox = new JCheckBox();
-		applyOnStartContainer.add(applyOnStartCheckbox, GBC.std());
-		applyOnStartContainer.add(new JLabel(tr("Apply on startup")));
 		applyOnStartCheckbox.setSelected(QuickLabelConfig.getInstance().isApplyOnStart());
-		panel.add(applyOnStartContainer, GBC.eol());
+		showTagKeyCheckbox = new JCheckBox();
+		showTagKeyCheckbox.setSelected(Config.getPref().getBoolean(
+				QuickLabelCompositionStrategy.PREF_KEY_SHOW_TAG_KEY, false));
+		showParenthesesCheckbox = new JCheckBox();
+		showParenthesesCheckbox.setSelected(Config.getPref().getBoolean(
+				QuickLabelCompositionStrategy.PREF_KEY_SHOW_PARENTHESES, false));
+
+
+		panel.add(getCheckboxLine(showTagKeyCheckbox, tr("Show key-value pairs")), GBC.eol());
+		panel.add(getCheckboxLine(showParenthesesCheckbox, tr("Always show sub tag with parentheses")), GBC.eol());
+		panel.add(getCheckboxLine(applyOnStartCheckbox, tr("Apply on startup")), GBC.eol());
 
 		JButton applyButton = new JButton(tr("Apply"));
 		applyButton.setToolTipText(tr("Apply change and show customized labels"));
@@ -229,6 +243,14 @@ public class QuickLabelDialog extends ExtendedDialog {
 	}
 	
 
+	private Component getCheckboxLine(JCheckBox checkbox, String labelString) {
+		JPanel container = new JPanel(new GridBagLayout());
+		container.add(checkbox, GBC.std());
+		container.add(new JLabel(labelString));
+		return container;
+	}
+
+
 	private void applyAll() {
 		confMain.saveConf();
 		confSub.saveConf();
@@ -244,8 +266,12 @@ public class QuickLabelDialog extends ExtendedDialog {
 	private void saveApplyOnStartConf() {
 		int val = applyOnStartCheckbox.isSelected()?
 				QuickLabelConfig.APPLY_ON_START_YES:QuickLabelConfig.APPLY_ON_START_NO;
-		System.out.println("QuickLabelDialog.saveApplyOnStartConf val=" + val);
 		Config.getPref().putInt(QuickLabelConfig.PREF_KEY_QUICKLABEL_APPLY_ON_START, val);
+
+		Config.getPref().putBoolean(QuickLabelCompositionStrategy.PREF_KEY_SHOW_PARENTHESES, 
+				showParenthesesCheckbox.isSelected());
+		Config.getPref().putBoolean(QuickLabelCompositionStrategy.PREF_KEY_SHOW_TAG_KEY, 
+				showTagKeyCheckbox.isSelected());
 	}
 	
 	private void reset () {
