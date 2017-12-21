@@ -2,6 +2,8 @@ package org.maripo.josm.quicklabel.strategy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.gui.mappaint.styleelement.LabelCompositionStrategy.DeriveLabelFromNameTagsCompositionStrategy;
@@ -17,8 +19,53 @@ import org.openstreetmap.josm.spi.preferences.Config;
 
 public class QuickLabelCompositionStrategy extends  DeriveLabelFromNameTagsCompositionStrategy{
 
-	private List<String> nameTags = new ArrayList<>();
-	private List<String> nameComplementTags = new ArrayList<>();
+	private static final Pattern patternReplacement = Pattern.compile("\\{(.+?)\\}");
+	class TagFormat {
+
+		private String str;
+		private boolean useReplacement = false;
+
+		public TagFormat(String line) {
+			this.str = line;
+			if (patternReplacement.matcher(str).matches()) {
+				this.useReplacement  = true;
+			}
+		}
+		boolean matched = false;
+		public String generateString(OsmPrimitive primitive) {
+			if (useReplacement) {
+				matched = true;
+				StringBuffer resultString = new StringBuffer();
+				Matcher regexMatcher = patternReplacement.matcher(str);
+				while (regexMatcher.find()) {
+					regexMatcher.appendReplacement(resultString, getReplacement(regexMatcher, primitive));
+				}
+				regexMatcher.appendTail(resultString);
+				if (matched) {
+					return resultString.toString();
+				} return null;
+			} else if (primitive.hasKey(str)) {
+				if (showTagKey) {
+					return str + "=" + primitive.get(str);
+				} else {
+					return primitive.get(str);
+				}
+			}
+			return null;
+		}
+		private String getReplacement(Matcher matcher, OsmPrimitive primitive) {
+			String key = matcher.group(1);
+			if (primitive.hasKey(key)) {
+				return primitive.get(key);
+			} else {
+				matched = false;
+				return "";
+			}
+		}
+		
+	}
+	private List<TagFormat> mainFormatList = new ArrayList<TagFormat>();
+	private List<TagFormat> subFormatList = new ArrayList<TagFormat>();
 	
 	// Preferences keys for custom conf
 	public static final String PREF_KEY_QUICKLABEL_MAIN_LABEL_ORDER = "quicklabel.nameOrder";
@@ -42,48 +89,54 @@ public class QuickLabelCompositionStrategy extends  DeriveLabelFromNameTagsCompo
     	defaultComposer = new DefaultLabelComposer();
     	labelComposer = defaultComposer;
     }
-
+/*
+ * 
+	private List<TagFormat> mainFormatList = new ArrayList<TagFormat>();
+	private List<TagFormat> subFormatList = new ArrayList<TagFormat>();
+ */
 	public void loadFromPreferences() {
 		if (Config.getPref() == null) {
-			this.nameTags = new ArrayList<>();
-			this.nameComplementTags = new ArrayList<>();
+			this.mainFormatList = new ArrayList<TagFormat>();
+			this.subFormatList = new ArrayList<TagFormat>();
 		} else {
-			this.nameTags = new ArrayList<>(
+			List<String> mainTagLines = new ArrayList<>(
 					Config.getPref().getList(PREF_KEY_QUICKLABEL_MAIN_LABEL_ORDER, new ArrayList<String>()));
-			this.nameComplementTags = new ArrayList<>(Config.getPref().getList(PREF_KEY_QUICKLABEL_SUB_LABEL_ORDER,
+			List<String> subTagLines = new ArrayList<>(Config.getPref().getList(PREF_KEY_QUICKLABEL_SUB_LABEL_ORDER,
 					new ArrayList<String>()));
+			mainFormatList.clear();
+			subFormatList.clear();
+			for (String line: mainTagLines) {
+				mainFormatList.add(new TagFormat(line));
+			}
+			for (String line: subTagLines) {
+				subFormatList.add(new TagFormat(line));
+				
+			}
 			this.showTagKey = Config.getPref().getBoolean(PREF_KEY_SHOW_TAG_KEY, false);
 			this.showParentheses = Config.getPref().getBoolean(PREF_KEY_SHOW_PARENTHESES, false);
 		}
 	}
 	
-	private String getTagString (String key, String value) {
-		if (showTagKey) {
-			return key + "=" + value;
-		} else {
-			return value;
-		}
-	}
 
-	private String getPrimitiveName(OsmPrimitive n) {
+	private String getPrimitiveName(OsmPrimitive primitive) {
 		StringBuilder name = new StringBuilder();
-		if (!n.hasKeys())
+		if (!primitive.hasKeys())
 			return null;
-		for (String rn : nameTags) {
-			String val = n.get(rn);
+		for (TagFormat format: mainFormatList) {
+			String val = format.generateString(primitive);
 			if (val != null) {
-				name.append(getTagString(rn, val));
+				name.append(val);
 				break;
 			}
 		}
-		for (String rn : nameComplementTags) {
-			String comp = n.get(rn);
+		for (TagFormat format: subFormatList) {
+			String comp = format.generateString(primitive);
 			if (comp != null) {
 				if (name.length() == 0 && !showParentheses) {
 					// No main tag
-					name.append(getTagString(rn, comp));
+					name.append(comp);
 				} else {
-					name.append(" (").append(getTagString(rn, comp)).append(')');
+					name.append(" (").append(comp).append(')');
 				}
 				break;
 			}

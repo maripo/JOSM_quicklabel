@@ -19,8 +19,6 @@ public class QuickLabelConfig {
 	// Preferences keys for default conf
 	private static final String PREF_KEY_DEFAULT_MAIN_LABEL_ORDER = "mappaint.nameOrder";
 	private static final String PREF_KEY_DEFAULT_SUB_LABEL_ORDER = "mappaint.nameComplementOrder";
-	
-
 
     private static final String[] DEFAULT_NAME_TAGS = {
         "name:" + LanguageInfo.getJOSMLocaleCode(),
