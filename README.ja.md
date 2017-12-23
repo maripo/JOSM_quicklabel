@@ -25,7 +25,8 @@
 ### 例 
 * "{building:levels}階建" という行があると、"building:levels=8" というタグのついた建物には "8階建" と表示されます。
 * "{addr:neighbourhood}{addr:block_number}-{addr:housenumber}" という行があると、"addr:neighbourhood=1丁目, addr:block_number=3, addr:housenumber=5" というタグのついたオブジェクトに "1丁目3-5" と表示されます。
-* "車椅子={wheelchair} 喫煙={smoking}" という行があると、"wheelchair=yes, smoking=no" というタグのついたオブジェクトには "車椅子=yes 喫煙=no" と表示されます。
+* "車椅子={wheelchair} 喫煙={smoking}" という行があると、"wheelchair=yes, smoking=no" というタグのついたレストランには "車椅子=yes 喫煙=no" と表示されます。
+* "車椅子={wheelchair} 喫煙={smoking}" という行は、"wheelchair" タグがあって "smoking" タグのないオブジェクトには適用されません。
  
  ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/screenshot_en1.png)
  
