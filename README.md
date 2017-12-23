@@ -4,7 +4,7 @@ This plugin shows specified tags next to objects.
 
 [日本語](https://github.com/maripo/JOSM_quicklabel/blob/master/README.ja.md)
 
-After installation, you can call the label customization dialog by choosing "View" > "QuickLabel" or shortcut Command+Shift+L.
+After installation, you can call the label customization dialog by choosing "View" > "QuickLabel" or shortcut Command+Shift+L. You can assign it to another key by JOSM preferences. 
 
 Note: The menu had been located in "Data" menu in very early versions.
 

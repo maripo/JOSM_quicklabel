@@ -4,7 +4,7 @@
 
 [English](https://github.com/maripo/JOSM_quicklabel/blob/master/README.md)
 
-インストールすると、"表示" > "QuickLabel" またはショートカット Command+Shift+Lでラベルをカスタマイズするウィンドウを表示することができます。
+インストールすると、"表示" > "QuickLabel" またはショートカット Command+Shift+L (このキーバインドはJOSMの設定で他のキーに割り当てることも可能です) でラベルをカスタマイズするウィンドウを表示することができます。
 
 注: 初期のバージョンでは "データ" メニューに含まれておりましたが、より適切な "表示" の下に移動しました。
 
@@ -22,7 +22,7 @@
 メインおよびサブのタグの行に {} で囲んだ箇所があると、それは普通のタグではなく、テキストの一部を該当するタグの値で置き換えたものが表示されるようになります。
 一行に複数の {} を含めることができ、{} に囲まれたタグすべてに該当するオブジェクトに適用されます。
 
-(例) 
+### 例 
 * "{building:levels}階建" という行があると、"building:levels=8" というタグのついた建物には "8階建" と表示されます。
 * "{addr:neighbourhood}{addr:block_number}-{addr:housenumber}" という行があると、"addr:neighbourhood=1丁目, addr:block_number=3, addr:housenumber=5" というタグのついたオブジェクトに "1丁目3-5" と表示されます。
 * "車椅子={wheelchair} 喫煙={smoking}" という行があると、"wheelchair=yes, smoking=no" というタグのついたオブジェクトには "車椅子=yes 喫煙=no" と表示されます。
