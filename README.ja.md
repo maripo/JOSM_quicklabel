@@ -8,7 +8,7 @@
 
 注: 初期のバージョンでは "データ" メニューに含まれておりましたが、より適切な "表示" の下に移動しました。
 
- ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/screenshot_en0.png)
+![Screenshot](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/top_screenshot_ja.png)
  
 ## 基本的な使い方
 

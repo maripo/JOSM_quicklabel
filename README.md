@@ -8,7 +8,7 @@ After installation, you can call the label customization dialog by choosing "Vie
 
 Note: The menu had been located in "Data" menu in very early versions.
 
- ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/screenshot_en0.png)
+ ![Screenshot](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/top_screenshot_en.png)
  
  ## Basic usage
  
