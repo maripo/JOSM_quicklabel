@@ -37,14 +37,14 @@ There are some options.
 
  ![Options](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/options_en.png)
 
-## Show key-value pairs
+### Show key-value pairs
 
 |Off|On|
 |---|---|
 |![Off](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/keyvalue_off_en.png)|![On](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/keyvalue_on_en.png)| 
 
-## Always show sub tag with parentheses
-## Apply on startup
+### Always show sub tag with parentheses
+### Apply on startup
 
 ## This plugin is useful when...
 
