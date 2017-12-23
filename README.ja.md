@@ -43,8 +43,9 @@
 ### キーと値を両方表示する
 このオプションにチェックを入れると、値だけでなく、「キー=値」という形式で表示されるようになります。どのキーがどの値なのかをはっきりさせたい場合にお使いください。
 
- ![On](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/keyvalue_on_ja.png)
- ![Off](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/keyvalue_off_ja.png)
+|Off|On|
+|---|---|
+|![Off](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/keyvalue_off_ja.png)|![On](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/keyvalue_on_ja.png)| 
 
 ### 起動時に適用する
 このオプションにチェックを入れると、JOSM起動時に即座にQuickLabelの設定が適用されます。チェックしないでおくと、次回起動時に再びQuickLabelダイアログを開いて「適用」を押さないと適用されません。
