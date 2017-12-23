@@ -28,13 +28,13 @@
 * "車椅子={wheelchair} 喫煙={smoking}" という行があると、"wheelchair=yes, smoking=no" というタグのついたレストランには "車椅子=yes 喫煙=no" と表示されます。
 * "車椅子={wheelchair} 喫煙={smoking}" という行は、"wheelchair" タグがあって "smoking" タグのないオブジェクトには適用されません。
  
- ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/format_example_ja.png)
+ ![Example of custom format](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/format_example_ja.png)
 
 ## オプション
 
 オプションによって表示のされ方が変わります。
 
- ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/options_ja.png)
+ ![Options](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/options_ja.png)
 
 
 ### サブのタグを必ず括弧に入れて表示する
@@ -42,6 +42,9 @@
 
 ### キーと値を両方表示する
 このオプションにチェックを入れると、値だけでなく、「キー=値」という形式で表示されるようになります。どのキーがどの値なのかをはっきりさせたい場合にお使いください。
+
+ ![On](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/keyvalue_on_ja.png)
+ ![Off](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/keyvalue_off_ja.png)
 
 ### 起動時に適用する
 このオプションにチェックを入れると、JOSM起動時に即座にQuickLabelの設定が適用されます。チェックしないでおくと、次回起動時に再びQuickLabelダイアログを開いて「適用」を押さないと適用されません。

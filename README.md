@@ -29,15 +29,21 @@ You can switch to JOSM's usual mode by clicking "Reset" button.
  * If a line "{fire_hydrant:type}/{ref}" is applied to a fire hydrant with "fire_hydrang:type=underground, ref=221-14" tags, its label will be "underground/221-14".
  * A line "{fire_hydrant:type}/{ref}" doesn't match an object has a "fire_hydrant:type" and no "ref". 
  
- ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/format_example_en.png) 
+ ![Example of custom format](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/format_example_en.png) 
  
 ## Options
 
 There are some options.
 
-* Show key-value pairs
-* Always show sub tag with parentheses
-* Apply on startup
+ ![Options](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/options_en.png)
+
+## Show key-value pairs
+
+ ![On](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/keyvalue_on_en.png)
+ ![Off](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/keyvalue_off_en.png)
+
+## Always show sub tag with parentheses
+## Apply on startup
 
 ## This plugin is useful when...
 
