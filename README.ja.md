@@ -8,17 +8,28 @@
 
 注: 初期のバージョンでは "データ" メニューに含まれておりましたが、より適切な "表示" の下に移動しました。
 
-
  ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/screenshot_en0.png)
+ 
+## 基本的な使い方
+
+「メイン」と「サブ」の2種類があります。各テキストボックスに優先度順にタグを記入してください。
+メインに該当するタグが存在しない場合は、サブのタグだけが表示されます。
+
+「適用」をクリックすると、設定が反映されます。「通常表示に戻す」をクリックすると、QuickLabelの設定ではなくJOSMの通常のラベルが表示されます。
+
+## 進んだ記法
+
+メインおよびサブのタグの行に {} で囲んだ箇所があると、それは普通のタグではなく、テキストの一部を該当するタグの値で置き換えたものが表示されるようになります。
+一行に複数の {} を含めることができ、{} に囲まれたタグすべてに該当するオブジェクトに適用されます。
+
+(例) 
+* "{building:levels}階建" という行があると、"building:levels=8" というタグのついた建物には "8階建" と表示されます。
+* "{addr:neighbourhood}{addr:block_number}-{addr:housenumber}" という行があると、"addr:neighbourhood=1丁目, addr:block_number=3, addr:housenumber=5" というタグのついたオブジェクトに "1丁目3-5" と表示されます。
+* "車椅子={wheelchair} 喫煙={smoking}" という行があると、"wheelchair=yes, smoking=no" というタグのついたオブジェクトには "車椅子=yes 喫煙=no" と表示されます。
  
  ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/screenshot_en1.png)
  
  ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/screenshot_en2.png)
- 
-## 設定方法
-
-「メイン」と「サブ」の2種類があります。各テキストボックスに優先度順にタグを記入してください。
-
 
 ## オプション
 

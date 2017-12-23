@@ -27,7 +27,7 @@ public class QuickLabelCompositionStrategy extends  DeriveLabelFromNameTagsCompo
 
 		public TagFormat(String line) {
 			this.str = line;
-			if (patternReplacement.matcher(str).matches()) {
+			if (patternReplacement.matcher(str).find()) {
 				this.useReplacement  = true;
 			}
 		}
