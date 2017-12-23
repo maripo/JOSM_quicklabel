@@ -28,9 +28,7 @@
 * "車椅子={wheelchair} 喫煙={smoking}" という行があると、"wheelchair=yes, smoking=no" というタグのついたレストランには "車椅子=yes 喫煙=no" と表示されます。
 * "車椅子={wheelchair} 喫煙={smoking}" という行は、"wheelchair" タグがあって "smoking" タグのないオブジェクトには適用されません。
  
- ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/screenshot_en1.png)
- 
- ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/screenshot_en2.png)
+ ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/format_example_ja.png)
 
 ## オプション
 

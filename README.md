@@ -29,9 +29,7 @@ You can switch to JOSM's usual mode by clicking "Reset" button.
  * If a line "{fire_hydrant:type}/{ref}" is applied to a fire hydrant with "fire_hydrang:type=underground, ref=221-14" tags, its label will be "underground/221-14".
  * A line "{fire_hydrant:type}/{ref}" doesn't match an object has a "fire_hydrant:type" and no "ref". 
  
- ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/screenshot_en1.png)
- 
- ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/screenshot_en2.png)
+ ![Preferences](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/format_example_en.png) 
  
 ## Options
 
