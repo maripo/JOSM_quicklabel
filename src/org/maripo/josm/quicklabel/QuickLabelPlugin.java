@@ -9,7 +9,6 @@ import javax.swing.JOptionPane;
 
 import org.maripo.josm.quicklabel.QuickLabelDialog.QuickLabelDialogListener;
 import org.maripo.josm.quicklabel.config.QuickLabelConfig;
-import org.maripo.josm.quicklabel.strategy.QuickLabelCompositionStrategy;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.osm.OsmPrimitive;
 import org.openstreetmap.josm.gui.MainApplication;

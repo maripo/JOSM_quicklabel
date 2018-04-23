@@ -1,8 +1,6 @@
 package org.maripo.josm.quicklabel.config;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 import org.maripo.josm.quicklabel.strategy.QuickLabelCompositionStrategy;

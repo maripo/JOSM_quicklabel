@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openstreetmap.josm.data.osm.OsmPrimitive;
+import org.openstreetmap.josm.data.osm.IPrimitive;
 import org.openstreetmap.josm.gui.mappaint.styleelement.LabelCompositionStrategy.DeriveLabelFromNameTagsCompositionStrategy;
 import org.openstreetmap.josm.spi.preferences.Config;
 
@@ -32,7 +32,7 @@ public class QuickLabelCompositionStrategy extends  DeriveLabelFromNameTagsCompo
 			}
 		}
 		boolean matched = false;
-		public String generateString(OsmPrimitive primitive) {
+		public String generateString(IPrimitive primitive) {
 			if (useReplacement) {
 				matched = true;
 				StringBuffer resultString = new StringBuffer();
@@ -53,7 +53,7 @@ public class QuickLabelCompositionStrategy extends  DeriveLabelFromNameTagsCompo
 			}
 			return null;
 		}
-		private String getReplacement(Matcher matcher, OsmPrimitive primitive) {
+		private String getReplacement(Matcher matcher, IPrimitive primitive) {
 			String key = matcher.group(1);
 			if (primitive.hasKey(key)) {
 				return primitive.get(key);
@@ -118,7 +118,7 @@ public class QuickLabelCompositionStrategy extends  DeriveLabelFromNameTagsCompo
 	}
 	
 
-	private String getPrimitiveName(OsmPrimitive primitive) {
+	private String getPrimitiveName(IPrimitive primitive) {
 		StringBuilder name = new StringBuilder();
 		if (!primitive.hasKeys())
 			return null;
@@ -145,10 +145,10 @@ public class QuickLabelCompositionStrategy extends  DeriveLabelFromNameTagsCompo
 	}
 
 	@Override
-	public String compose(OsmPrimitive primitive) {
+	public String compose(IPrimitive primitive) {
 		return labelComposer.composeLabel(primitive);
 	}
-	public String composeDefault (OsmPrimitive primitive) {
+	public String composeDefault (IPrimitive primitive) {
 		return super.compose(primitive);
 	}
 
@@ -158,12 +158,12 @@ public class QuickLabelCompositionStrategy extends  DeriveLabelFromNameTagsCompo
 	}
 	
 	interface LabelComposer {
-		String composeLabel (OsmPrimitive primitive);
+		String composeLabel (IPrimitive primitive);
 	}
 	class DefaultLabelComposer implements LabelComposer {
 
 		@Override
-		public String composeLabel(OsmPrimitive primitive) {
+		public String composeLabel(IPrimitive primitive) {
 			return composeDefault(primitive);
 		}
 		
@@ -171,7 +171,7 @@ public class QuickLabelCompositionStrategy extends  DeriveLabelFromNameTagsCompo
 	class QuickLabelComposer implements LabelComposer {
 
 		@Override
-		public String composeLabel(OsmPrimitive primitive) {
+		public String composeLabel(IPrimitive primitive) {
 			if (primitive == null)
 				return null;
 			return getPrimitiveName(primitive);
