@@ -29,6 +29,7 @@ import org.openstreetmap.josm.gui.ExtendedDialog;
 import org.openstreetmap.josm.spi.preferences.Config;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
+import org.openstreetmap.josm.tools.ImageProvider.ImageSizes;
 
 /**
  * QuickLabel configuration dialog
@@ -226,9 +227,9 @@ public class QuickLabelDialog extends ExtendedDialog {
 			}
 		});
 
-		applyButton.setIcon(ImageProvider.get("ok"));
-		resetButton.setIcon(ImageProvider.get("undo"));
-		cancelButton.setIcon(ImageProvider.get("cancel"));
+		applyButton.setIcon(ImageProvider.get("ok", ImageSizes.LARGEICON));
+		resetButton.setIcon(ImageProvider.get("undo", ImageSizes.LARGEICON));
+		cancelButton.setIcon(ImageProvider.get("cancel", ImageSizes.LARGEICON));
 		panel.add(applyButton, GBC.std());
 		panel.add(resetButton, GBC.std());
 		panel.add(cancelButton, GBC.eol());
