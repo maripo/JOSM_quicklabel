@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
 import org.maripo.josm.quicklabel.config.QuickLabelConfig;
 import org.maripo.josm.quicklabel.config.QuickLabelConfigItem;
@@ -47,12 +49,47 @@ public class QuickLabelDialog extends ExtendedDialog {
 	public void setListener(QuickLabelDialogListener listener) {
 		this.listener = listener;
 	}
-
+	
 	class Conf {
+		class ReorderButtonListener implements ActionListener {
 
+			private int target;
+
+			public ReorderButtonListener(int target) {
+				this.target = target;
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (caretPosition <= textarea.getText().length()) {
+					String[] lines = textarea.getText().split("\n");
+					int fromIndex = 0;
+					for (int i=0, l= Math.min(textarea.getText().length(), caretPosition); i<l; i++) {
+						if (textarea.getText().charAt(i)=='\n') {
+							fromIndex++;
+						}
+					}
+					int toIndex = fromIndex + target;
+					if (toIndex >= 0 && toIndex < lines.length && fromIndex < lines.length) {
+						// Swap
+						String fromLine = lines[fromIndex];
+						String toLine = lines[toIndex];
+						lines[toIndex] = fromLine;
+						lines[fromIndex] = toLine;
+						textarea.setText(String.join("\n", lines));
+						
+					}
+				}
+				
+			}
+			
+		}
+
+		int caretPosition = 0;
 		private JTextArea textarea;
 		private String title;
 		private QuickLabelConfigItem conf;
+		private JButton buttonUp, buttonDown;
 
 		public Conf(QuickLabelConfigItem conf, String title) {
 			this.conf = conf;
@@ -76,9 +113,10 @@ public class QuickLabelDialog extends ExtendedDialog {
 					loadDefault();
 				}
 			});
+			
 			panel.add(restoreButton, GBC.eol());
 			
-			textarea = new JTextArea(6, 15);
+			textarea = new JTextArea(6, 18);
 			if (savedTags != null && !savedTags.isEmpty()) {
 				textarea.setText(String.join("\n", savedTags.toArray(new String[0])));
 			}
@@ -106,9 +144,28 @@ public class QuickLabelDialog extends ExtendedDialog {
 			});
 			// Suppress input with "TAB" key strokes
 			textarea.getInputMap().put(KeyStroke.getKeyStroke("TAB"), "none");
+			textarea.addCaretListener(new CaretListener() {
+				
+				@Override
+				public void caretUpdate(CaretEvent e) {
+					caretPosition = e.getDot();
+					
+				}
+			});
 
 			final JScrollPane scrolll = new JScrollPane(textarea);
 			panel.add(scrolll, GBC.eol().fill());
+
+			// Initialize buttons
+			buttonUp = new JButton();
+			buttonUp.setIcon(ImageProvider.get("dialogs", "up", ImageSizes.SMALLICON));
+			buttonUp.addActionListener(new ReorderButtonListener(-1));
+			buttonDown = new JButton();
+			buttonDown.setIcon(ImageProvider.get("dialogs", "down", ImageSizes.SMALLICON));
+			buttonDown.addActionListener(new ReorderButtonListener(1));
+			panel.add(buttonUp, GBC.std());
+			panel.add(buttonDown, GBC.std());
+			
 			return panel;
 		}
 
