@@ -7,6 +7,8 @@ import java.awt.Component;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -51,6 +53,18 @@ public class QuickLabelDialog extends ExtendedDialog {
 	}
 	
 	class Conf {
+		int getCursorLine () {
+			int fromIndex = 0;
+			for (int i=0, l= Math.min(textarea.getText().length(), caretPosition); i<l; i++) {
+				if (textarea.getText().charAt(i)=='\n') {
+					fromIndex++;
+				}
+			}
+			return fromIndex;
+		}
+		int getTotalLines () {
+			return textarea.getText().split("\n").length;
+		}
 		class ReorderButtonListener implements ActionListener {
 
 			private int target;
@@ -63,12 +77,7 @@ public class QuickLabelDialog extends ExtendedDialog {
 			public void actionPerformed(ActionEvent e) {
 				if (caretPosition <= textarea.getText().length()) {
 					String[] lines = textarea.getText().split("\n");
-					int fromIndex = 0;
-					for (int i=0, l= Math.min(textarea.getText().length(), caretPosition); i<l; i++) {
-						if (textarea.getText().charAt(i)=='\n') {
-							fromIndex++;
-						}
-					}
+					int fromIndex = getCursorLine();
 					int toIndex = fromIndex + target;
 					if (toIndex >= 0 && toIndex < lines.length && fromIndex < lines.length) {
 						// Swap
@@ -77,15 +86,24 @@ public class QuickLabelDialog extends ExtendedDialog {
 						lines[toIndex] = fromLine;
 						lines[fromIndex] = toLine;
 						textarea.setText(String.join("\n", lines));
-						
+						// Move caret
+						int nextCaret = 0;
+						for (int i=0; i<=toIndex; i++) {
+							nextCaret += (lines[i].length()+1);
+						}
+						System.out.println("CaretIndex=" + nextCaret);
+						textarea.setCaretPosition(nextCaret-1);
+						textarea.requestFocus();
 					}
+					
 				}
 				
 			}
 			
 		}
 
-		int caretPosition = 0;
+		int caretPosition = -1;
+		int lineIndex = -1;
 		private JTextArea textarea;
 		private String title;
 		private QuickLabelConfigItem conf;
@@ -149,7 +167,10 @@ public class QuickLabelDialog extends ExtendedDialog {
 				@Override
 				public void caretUpdate(CaretEvent e) {
 					caretPosition = e.getDot();
-					
+					int cursorLine = getCursorLine();
+					int totalLines = getTotalLines();
+					buttonUp.setEnabled(cursorLine > 0);
+					buttonDown.setEnabled(cursorLine < totalLines-1);
 				}
 			});
 
@@ -163,6 +184,8 @@ public class QuickLabelDialog extends ExtendedDialog {
 			buttonDown = new JButton();
 			buttonDown.setIcon(ImageProvider.get("dialogs", "down", ImageSizes.SMALLICON));
 			buttonDown.addActionListener(new ReorderButtonListener(1));
+			buttonUp.setEnabled(false);
+			buttonDown.setEnabled(false);
 			panel.add(buttonUp, GBC.std());
 			panel.add(buttonDown, GBC.std());
 			
