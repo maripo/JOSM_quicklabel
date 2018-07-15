@@ -22,7 +22,7 @@
 
     <target name="additional-manifest">
         <manifest file="MANIFEST" mode="update">
-            <attribute name="13170_Plugin-Url" value="20;https://github.com/maripo/JOSM_quicklabel/releases/download/20/QuickLabel.jar" />
+            <attribute name="13170_Plugin-Url" value="21;https://github.com/maripo/JOSM_quicklabel/releases/download/21/QuickLabel.jar" />
             <attribute name="12545_Plugin-Url" value="v1.0.1;https://github.com/maripo/JOSM_quicklabel/releases/download/v1.0.1/QuickLabel.jar" />
         </manifest>
 	</target>
