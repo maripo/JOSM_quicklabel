@@ -186,6 +186,9 @@ public class QuickLabelDialog extends ExtendedDialog {
 			buttonDown.addActionListener(new ReorderButtonListener(1));
 			buttonUp.setEnabled(false);
 			buttonDown.setEnabled(false);
+
+			buttonUp.setToolTipText(tr("Move up"));
+			buttonDown.setToolTipText(tr("Move down"));
 			panel.add(buttonUp, GBC.std());
 			panel.add(buttonDown, GBC.std());
 			
