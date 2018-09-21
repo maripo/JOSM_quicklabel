@@ -7,8 +7,6 @@ import java.awt.Component;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -28,8 +26,8 @@ import javax.swing.event.CaretListener;
 import org.maripo.josm.quicklabel.config.QuickLabelConfig;
 import org.maripo.josm.quicklabel.config.QuickLabelConfigItem;
 import org.maripo.josm.quicklabel.strategy.QuickLabelCompositionStrategy;
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.gui.ExtendedDialog;
+import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.spi.preferences.Config;
 import org.openstreetmap.josm.tools.GBC;
 import org.openstreetmap.josm.tools.ImageProvider;
@@ -249,7 +247,7 @@ public class QuickLabelDialog extends ExtendedDialog {
 	JCheckBox showParenthesesCheckbox;
 	
 	public QuickLabelDialog() {
-		super(Main.parent, "QuickLabel");
+		super(MainApplication.getMainFrame(), "QuickLabel");
 		this.setAlwaysOnTop(true);
 
 		JPanel panel = new JPanel(new GridBagLayout());
