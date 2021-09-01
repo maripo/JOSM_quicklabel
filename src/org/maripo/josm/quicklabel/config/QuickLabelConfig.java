@@ -93,6 +93,7 @@ public class QuickLabelConfig {
 			Field field = TextLabel.class.getDeclaredField("AUTO_LABEL_COMPOSITION_STRATEGY");
 			field.setAccessible(true);
 			// Remove "final" modifier from AUTO_LABEL_COMPOSITION_STRATEGY
+			// TODO: java.lang.NoSuchFieldException: modifiers
 			Field modifierField = Field.class.getDeclaredField("modifiers");
 			modifierField.setAccessible(true);
 			modifierField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
