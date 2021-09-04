@@ -1,0 +1,104 @@
+# Japanese translations for PACKAGE package.
+# Copyright (C) 2017 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Mariko GODA <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-15 21:41+0900\n"
+"PO-Revision-Date: 2017-09-18 21:19+0900\n"
+"Last-Translator: Mariko GODA <EMAIL@ADDRESS>\n"
+"Language-Team: Japanese\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelPlugin.java:48
+#: src/org/maripo/josm/quicklabel/QuickLabelPlugin.java:50
+#: src/org/maripo/josm/quicklabel/QuickLabelPlugin.java:55
+msgid "Show specified tag values next to objects"
+msgstr "指定したタグの値をオブジェクトの隣に表示します"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelPlugin.java:92
+msgid "Your QuickLabel config is applied."
+msgstr "QuickLabelの設定が適用されました"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:126
+msgid "Restore default"
+msgstr "デフォルトに戻す"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:190
+msgid "Move up"
+msgstr "1つ上に"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:191
+msgid "Move down"
+msgstr "1つ下に"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:244
+msgid "Main"
+msgstr "メイン"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:245
+msgid "Sub"
+msgstr "サブ"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:257
+msgid ""
+"<html>Tags to show next to objects.<br>You can specify multiple tags by "
+"writing into multiple lines<br>in the order of descending priorities.</html>"
+msgstr ""
+"<html>オブジェクトの隣に表示するタグを指定します。<br>複数のタグを指定するこ"
+"ともできます。優先順位順に1行ずつ記入してください。</html>"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:259
+msgid ""
+"<html>Label format will be \"<b><i>Main</i>(<i>Sub</i>)</b>\" or "
+"\"<b><i>Sub</i></b>\" if main tag is empty.</html>"
+msgstr ""
+"<html>ラベルのフォーマットは \"<b><i>メイン</i>(<i>サブ</i>)</b>\" になりま"
+"す。<br>メインのタグがない場合は \"<b><i>サブ</i></b>\" になります。</html>"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:280
+msgid "Show key-value pairs"
+msgstr "キーと値を両方表示する"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:281
+msgid "Always show sub tag with parentheses"
+msgstr "サブのタグを必ず括弧に入れて表示する"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:282
+msgid "Apply on startup"
+msgstr "起動時に適用する"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:284
+msgid "Apply"
+msgstr "適用"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:285
+msgid "Apply change and show customized labels"
+msgstr "内容を適用し、カスタマイズしたラベルを表示する"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:293
+msgctxt "quicklabel"
+msgid "Reset"
+msgstr "通常表示に戻す"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:294
+msgid "Reset QuickLabel config and show default labels"
+msgstr "QuickLabelで設定した内容をリセットし、通常の表示に戻す"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:302
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:303
+msgid "Close this window without saving"
+msgstr "セーブせずにこのウィンドウを閉じる"
+
+#~ msgid "Sub labels"
+#~ msgstr "サブ"

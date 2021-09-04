@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-15 21:41+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/org/maripo/josm/quicklabel/QuickLabelPlugin.java:48
+#: src/org/maripo/josm/quicklabel/QuickLabelPlugin.java:50
+#: src/org/maripo/josm/quicklabel/QuickLabelPlugin.java:55
+msgid "Show specified tag values next to objects"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelPlugin.java:92
+msgid "Your QuickLabel config is applied."
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:126
+msgid "Restore default"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:190
+msgid "Move up"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:191
+msgid "Move down"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:244
+msgid "Main"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:245
+msgid "Sub"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:257
+msgid ""
+"<html>Tags to show next to objects.<br>You can specify multiple tags by "
+"writing into multiple lines<br>in the order of descending priorities.</html>"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:259
+msgid ""
+"<html>Label format will be \"<b><i>Main</i>(<i>Sub</i>)</b>\" or "
+"\"<b><i>Sub</i></b>\" if main tag is empty.</html>"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:280
+msgid "Show key-value pairs"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:281
+msgid "Always show sub tag with parentheses"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:282
+msgid "Apply on startup"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:284
+msgid "Apply"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:285
+msgid "Apply change and show customized labels"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:293
+msgctxt "quicklabel"
+msgid "Reset"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:294
+msgid "Reset QuickLabel config and show default labels"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:302
+msgid "Cancel"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:303
+msgid "Close this window without saving"
+msgstr ""

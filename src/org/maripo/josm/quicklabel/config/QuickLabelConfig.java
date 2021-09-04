@@ -2,6 +2,7 @@ package org.maripo.josm.quicklabel.config;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import sun.misc.Unsafe;
 
 import org.maripo.josm.quicklabel.strategy.QuickLabelCompositionStrategy;
 import org.openstreetmap.josm.gui.mappaint.styleelement.LabelCompositionStrategy;
@@ -89,16 +90,14 @@ public class QuickLabelConfig {
 		System.out.println("QuickLabelConfig.setStrategy " + strategy);
 		TextLabel.AUTO_LABEL_COMPOSITION_STRATEGY.toString();
 		try {
-
+			Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+			unsafeField.setAccessible(true);
+			Unsafe unsafe = (Unsafe) unsafeField.get(null);
+			
 			Field field = TextLabel.class.getDeclaredField("AUTO_LABEL_COMPOSITION_STRATEGY");
 			field.setAccessible(true);
-			// Remove "final" modifier from AUTO_LABEL_COMPOSITION_STRATEGY
-			// TODO: java.lang.NoSuchFieldException: modifiers
-			Field modifierField = Field.class.getDeclaredField("modifiers");
-			modifierField.setAccessible(true);
-			modifierField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-			// Replace!
-			field.set(null, strategy);
+			unsafe.putObject(unsafe.staticFieldBase(field), unsafe.staticFieldOffset(field), strategy);
+
 		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
