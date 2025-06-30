@@ -1,0 +1,70 @@
+#: src/org/maripo/josm/quicklabel/QuickLabelPlugin.java:49
+#: src/org/maripo/josm/quicklabel/QuickLabelPlugin.java:51
+#: src/org/maripo/josm/quicklabel/QuickLabelPlugin.java:56
+msgid "Show specified tag values next to objects"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelPlugin.java:93
+msgid "Your QuickLabel config is applied."
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:76
+msgid "Restore default"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:166
+msgid "Main"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:167
+msgid "Sub"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:179
+msgid ""
+"<html>Tags to show next to objects.<br>You can specify multiple tags by "
+"writing into multiple lines<br>in the order of descending priorities.</html>"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:181
+msgid ""
+"<html>Label format will be \"<b><i>Main</i>(<i>Sub</i>)</b>\" or "
+"\"<b><i>Sub</i></b>\" if main tag is empty.</html>"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:202
+msgid "Show key-value pairs"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:203
+msgid "Always show sub tag with parentheses"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:204
+msgid "Apply on startup"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:206
+msgid "Apply"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:207
+msgid "Apply change and show customized labels"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:215
+msgctxt "quicklabel"
+msgid "Reset"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:216
+msgid "Reset QuickLabel config and show default labels"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:224
+msgid "Cancel"
+msgstr ""
+
+#: src/org/maripo/josm/quicklabel/QuickLabelDialog.java:225
+msgid "Close this window without saving"
+msgstr ""
