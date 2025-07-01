@@ -26,9 +26,9 @@ You can switch to JOSM's usual mode by clicking "Reset" button.
  Tags placed between curly braces ("{" and "}") are replaced with values of corresponding tags.
  
  ### Examples
- * If a line "{level}F" is applied to an object with "level=3" tag, its label will be "3F".
- * If a line "s={smoking} w={wheelchair}" is applied to a restaurants with "wheelchair=yes, smoking=no" tags, its label will be "s=no w=yes".
- * If a line "{fire_hydrant:type}/{ref}" is applied to a fire hydrant with "fire_hydrang:type=underground, ref=221-14" tags, its label will be "underground/221-14".
+ * If a line `{level}F` is applied to an object with `level=3` tag, its label will be `3F`.
+ * If a line `s={smoking} w={wheelchair}` is applied to a restaurants with `wheelchair=yes, smoking=no` tags, its label will be `s=no w=yes`.
+ * If a line `{fire_hydrant:type}/{ref}` is applied to a fire hydrant with `fire_hydrang:type=underground, ref=221-14` tags, its label will be `underground/221-14`.
  * A line like "{fire_hydrant:type}/{ref}" will not match an object that has a "fire_hydrant:type" tag but no "ref" tag.
  
  ![Example of custom format](https://raw.githubusercontent.com/maripo/JOSM_quicklabel/master/doc/img/format_example_en.png) 
@@ -50,8 +50,8 @@ There are some options.
 
 ## This plugin is useful when...
 
- * You want to complete "cuisine" tags of all restaurants in your town
- * You care more about the "surface" than the "capacity" of parking areas
+ * You want to complete `cuisine` tags of all restaurants in your town
+ * You care more about the `surface` than the `capacity` of parking areas
  * You review roads' details by comparing surface, sidewalks and maxspeed values
  * You want to focus on multilingual tags by temporarily prioritizing `name:*` tags
 
